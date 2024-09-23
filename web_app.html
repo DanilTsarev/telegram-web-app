@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Web App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Real Estate Data</h2>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Complex</th>
+                <th>Corpus</th>
+                <th>Apartments Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Табличные данные будут вставлены сюда -->
+        </tbody>
+    </table>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        // Дождёмся готовности WebApp
+        Telegram.WebApp.ready();
+
+        // Получаем данные от бота через Web App API
+        const data = Telegram.WebApp.initDataUnsafe;
+
+        // Функция для отображения таблицы
+        function loadTable(data) {
+            const tableBody = document.getElementById('data-table').querySelector('tbody');
+            tableBody.innerHTML = '';
+
+            // Заполняем таблицу полученными данными
+            data.forEach(row => {
+                const tr = document.createElement('tr');
+                const complexTd = document.createElement('td');
+                const corpusTd = document.createElement('td');
+                const countTd = document.createElement('td');
+
+                complexTd.textContent = row.complex;
+                corpusTd.textContent = row.corpus;
+                countTd.textContent = row.apartments_count;
+
+                tr.appendChild(complexTd);
+                tr.appendChild(corpusTd);
+                tr.appendChild(countTd);
+                tableBody.appendChild(tr);
+            });
+        }
+
+        // Загружаем данные, если они переданы через initData
+        if (data && data.length > 0) {
+            loadTable(data);
+        }
+    </script>
+</body>
+</html>
